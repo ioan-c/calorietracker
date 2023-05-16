@@ -1,0 +1,10 @@
+version: '1'
+services:
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=calorietracker
+      - POSTGRES_USER=calorietracker
+      - POSTGRES_PASSWORD=calorietracker
