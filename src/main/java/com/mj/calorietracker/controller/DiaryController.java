@@ -1,8 +1,9 @@
 package com.mj.calorietracker.controller;
 
+import com.mj.calorietracker.model.MealDiaryEntries;
 import com.mj.calorietracker.model.add.AddDiaryEntryAndFood;
 import com.mj.calorietracker.model.add.AddDiaryEntry;
-import com.mj.calorietracker.model.update.UpdateDiaryEntry;
+import com.mj.calorietracker.model.DiaryEntry;
 import com.mj.calorietracker.service.DiaryService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -21,13 +22,13 @@ public class DiaryController {
     private final DiaryService diaryService;
 
     @GetMapping
-    public List<UpdateDiaryEntry> findAllDiaryEntries() {
+    public List<DiaryEntry> findAllDiaryEntries() {
         return diaryService.findAllDiaryEntries();
     }
 
-    @GetMapping("/{entryDate}")
-    public List<UpdateDiaryEntry> findDiaryEntriesByDate(@PathVariable LocalDate entryDate) {
-        return diaryService.findDiaryEntriesByDate(entryDate);
+    @GetMapping("/{userId}/{entryDate}")
+    public  List<MealDiaryEntries> findDiaryEntriesByUserIdAndDate(@PathVariable UUID userId, @PathVariable LocalDate entryDate) {
+        return diaryService.findDiaryEntriesByUserIdAndDate(userId, entryDate);
     }
 
     @PostMapping("/add")

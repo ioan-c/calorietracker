@@ -13,6 +13,9 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 import java.util.Objects;
 
+import static com.mj.calorietracker.enums.ExceptionMessages.FOOD_BARCODE_CONFLICT;
+import static com.mj.calorietracker.enums.ExceptionMessages.FOOD_NAME_BRAND_CONFLICT;
+
 @Service
 @AllArgsConstructor
 public class FoodService {
@@ -34,12 +37,12 @@ public class FoodService {
     private void validate(AddFood food) {
         if(StringUtils.hasLength(food.getBarcode())) {
             foodRepository.findByBarcode(food.getBarcode()).ifPresent(f -> {
-                throw new FoodAlreadyExistsException(foodMapper.toModel(f), "Food with this barcode already exists!");
+                throw new FoodAlreadyExistsException(foodMapper.toModel(f), FOOD_BARCODE_CONFLICT.getMessage());
             });
         }
         foodRepository.findByNameEqualsIgnoreCase(food.getName()).ifPresent(f -> {
             if(Objects.equals(f.getBrand(), food.getBrand())){
-                throw new FoodAlreadyExistsException(foodMapper.toModel(f), "Food with this name and brand already exists!");
+                throw new FoodAlreadyExistsException(foodMapper.toModel(f), FOOD_NAME_BRAND_CONFLICT.getMessage());
             }
         });
     }

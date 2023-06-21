@@ -1,6 +1,5 @@
-package com.mj.calorietracker.model.update;
+package com.mj.calorietracker.model;
 
-import com.mj.calorietracker.enums.Meal;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,14 +8,12 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class UpdateDiaryEntry {
+public class DiaryEntry {
 
     private UUID id;
     private LocalDate entryDate;
-    private UUID userId;
     private UUID unitId;
     private Double servingQuantity;
-    private Meal meal;
     private Integer calories;
     private Double fat;
     private Double fatSaturated;

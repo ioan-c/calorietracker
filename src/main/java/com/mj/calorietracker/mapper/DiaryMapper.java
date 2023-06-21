@@ -3,7 +3,7 @@ package com.mj.calorietracker.mapper;
 import com.mj.calorietracker.model.NutritionInfo;
 import com.mj.calorietracker.model.add.AddDiaryEntryAndFood;
 import com.mj.calorietracker.model.add.AddDiaryEntry;
-import com.mj.calorietracker.model.update.UpdateDiaryEntry;
+import com.mj.calorietracker.model.DiaryEntry;
 import com.mj.calorietracker.repository.dao.DiaryEntryEntity;
 import com.mj.calorietracker.repository.dao.UnitEntity;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +16,8 @@ public class DiaryMapper {
 
     private final ModelMapper modelMapper;
 
-    public UpdateDiaryEntry toModel(DiaryEntryEntity diaryEntryEntity) {
-        return modelMapper.map(diaryEntryEntity, UpdateDiaryEntry.class);
+    public DiaryEntry toModel(DiaryEntryEntity diaryEntryEntity) {
+        return modelMapper.map(diaryEntryEntity, DiaryEntry.class);
     }
     public DiaryEntryEntity toEntity(AddDiaryEntryAndFood addDiaryEntryAndFood) {
         return new DiaryEntryEntity().setName(addDiaryEntryAndFood.getName())
@@ -74,7 +74,7 @@ public class DiaryMapper {
                 .setVitaminC(nutritionInfo.getVitaminC())
                 .setVitaminD(nutritionInfo.getVitaminD());
     }
-    public DiaryEntryEntity toEntity(UpdateDiaryEntry updateDiaryEntry) {
-        return modelMapper.map(updateDiaryEntry, DiaryEntryEntity.class);
+    public DiaryEntryEntity toEntity(DiaryEntry diaryEntry) {
+        return modelMapper.map(diaryEntry, DiaryEntryEntity.class);
     }
 }

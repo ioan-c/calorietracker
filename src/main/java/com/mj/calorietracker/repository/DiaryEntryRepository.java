@@ -9,5 +9,5 @@ import java.util.UUID;
 
 public interface DiaryEntryRepository extends JpaRepository<DiaryEntryEntity, UUID> {
 
-    List<DiaryEntryEntity> findAllByEntryDate(LocalDate entryDate);
+    List<DiaryEntryEntity> findAllByUserIdAndEntryDate (UUID userId, LocalDate entryDate);
 }
