@@ -9,4 +9,6 @@ import java.util.UUID;
 public interface FoodRepository extends JpaRepository<FoodEntity, UUID> {
 
     Optional<FoodEntity> findByBarcode(String barcode);
+
+    Optional<FoodEntity> findByNameEqualsIgnoreCase(String name);
 }

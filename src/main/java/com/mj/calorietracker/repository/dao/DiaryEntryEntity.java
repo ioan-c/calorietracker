@@ -1,8 +1,10 @@
 package com.mj.calorietracker.repository.dao;
 
+import com.mj.calorietracker.enums.Meal;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -12,17 +14,24 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "foods")
-public class FoodEntity {
+@Table(name = "diary_entries")
+public class DiaryEntryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @JdbcTypeCode(SqlTypes.UUID)
     private UUID id;
-    private String barcode;
     private String name;
     private String brand;
-    private LocalDate createdDate;
+    private LocalDate entryDate;
+    private UUID userId;
+    @ManyToOne
+    @JoinColumn(name = "unit_id")
+    private UnitEntity unit;
+    private Double servingQuantity;
+    @Enumerated(EnumType.STRING)
+    @ColumnTransformer(write="?::meal")
+    private Meal meal;
     private Integer calories;
     private Double fat;
     private Double fatSaturated;

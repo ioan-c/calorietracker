@@ -1,6 +1,7 @@
 package com.mj.calorietracker.controller;
 
 import com.mj.calorietracker.model.Food;
+import com.mj.calorietracker.model.add.AddFood;
 import com.mj.calorietracker.service.FoodService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ public class FoodController {
     }
 
     @PostMapping("/add")
-    public HttpStatus addFood(@Valid @RequestBody Food food) {
+    public HttpStatus addFood(@Valid @RequestBody AddFood food) {
         foodService.addFood(food);
         return HttpStatus.OK;
     }
