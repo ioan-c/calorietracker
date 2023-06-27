@@ -4,6 +4,7 @@ import com.mj.calorietracker.model.Food;
 import com.mj.calorietracker.model.add.AddFood;
 import com.mj.calorietracker.service.FoodService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +18,14 @@ public class FoodController {
 
     private final FoodService foodService;
 
-    @GetMapping("find-all")
+    @GetMapping("/find-all")
     public List<Food> findAllFoods() {
         return foodService.getAllFoods();
+    }
+
+    @GetMapping("/find-by/{searchString}")
+    public List<Food> findFoodsBy(@PathVariable @Valid @Size(min = 1, max = 100) String searchString){
+        return foodService.findBySearchString(searchString);
     }
 
     @PostMapping("/add")
