@@ -13,6 +13,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>calorietracker</name>
 	<description>Calorie Tracker</description>
+	<packaging>war</packaging>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -55,6 +56,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<optional>true</optional>
 		</dependency>
@@ -66,6 +72,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>calorietracker</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

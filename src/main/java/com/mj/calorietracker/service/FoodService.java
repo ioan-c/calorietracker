@@ -59,6 +59,7 @@ public class FoodService {
 
     private int countMatchedValues(Food food, Set<String> searchValues) {
         Set<String> concatenatedColumns = Stream.of(food.getName(), food.getBrand())
+                .filter(Objects::nonNull)
                 .flatMap(column -> Arrays.stream(column.split("\\s+")))
                 .collect(Collectors.toSet());
 

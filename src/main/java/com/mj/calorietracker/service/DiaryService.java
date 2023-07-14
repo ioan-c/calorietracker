@@ -22,7 +22,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static com.mj.calorietracker.enums.ExceptionMessages.*;
 import static com.mj.calorietracker.util.NutritionValueConvertor.convertToServingQuantity;
@@ -51,7 +50,7 @@ public class DiaryService {
                     .entrySet().stream()
                     .map(mealListEntry -> new MealDiaryEntries().setMeal(mealListEntry.getKey())
                             .setDiaryEntries(mealListEntry.getValue().stream().map(diaryMapper::toModel).toList()))
-                    .collect(Collectors.toList());
+                    .toList();
         } else {
             throw new ResourceNotFoundException(USER_NOT_FOUND.getMessage());
         }
