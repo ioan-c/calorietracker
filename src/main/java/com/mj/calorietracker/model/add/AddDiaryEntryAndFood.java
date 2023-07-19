@@ -22,12 +22,15 @@ public class AddDiaryEntryAndFood {
     @Size(max = 100)
     private String brand;
     private LocalDate entryDate;
+    @NotNull
     private UUID userId;
+    @NotNull
     private UUID unitId;
     @NotNull
     @PositiveOrZero()
     @Digits(integer = 3, fraction = 2)
     private Double servingQuantity;
+    @NotNull
     private Meal meal;
     @Valid
     private NutritionInfo nutritionInfo;

@@ -12,13 +12,18 @@ import java.util.UUID;
 @Setter
 public class AddDiaryEntry {
 
+    @NotNull
     private LocalDate entryDate;
+    @NotNull
     private UUID userId;
+    @NotNull
     private UUID unitId;
+    @NotNull
     private UUID foodId;
     @NotNull
     @PositiveOrZero()
     @Digits(integer = 3, fraction = 2)
     private Double servingQuantity;
+    @NotNull
     private Meal meal;
 }
