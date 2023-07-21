@@ -8,6 +8,7 @@ import lombok.Getter;
 public enum ExceptionMessages {
 
     USER_NOT_FOUND("Could not find user with the specified id!"),
+    USERNAME_NOT_FOUND("Could not find user with the specified username!"),
     UNIT_NOT_FOUND("Could not find unit of measurement with the specified id!"),
     FOOD_NOT_FOUND("Could not find food with the specified id!"),
     DIARY_ENTRY_NOT_FOUND("Could not find a diary entry with the specified id!"),
