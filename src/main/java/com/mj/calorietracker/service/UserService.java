@@ -17,7 +17,7 @@ public class UserService {
 
     public final UUID getIdByUsername(final String username) {
         return userRepository.findUserEntityByUsernameEquals(username)
-                .orElseThrow(() -> new ResourceNotFoundException(USERNAME_NOT_FOUND.getMessage()))
+                .orElseThrow(() -> new ResourceNotFoundException(USERNAME_NOT_FOUND.getText()))
                 .getId();
     }
 }

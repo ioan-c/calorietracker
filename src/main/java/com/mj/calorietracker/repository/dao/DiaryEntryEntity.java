@@ -21,36 +21,16 @@ public class DiaryEntryEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     @JdbcTypeCode(SqlTypes.UUID)
     private UUID id;
-    private String name;
-    private String brand;
     private LocalDate entryDate;
     private UUID userId;
     @ManyToOne
     @JoinColumn(name = "unit_id")
     private UnitEntity unit;
+    @ManyToOne
+    @JoinColumn(name = "food_id")
+    private FoodEntity food;
     private Double servingQuantity;
     @Enumerated(EnumType.STRING)
     @ColumnTransformer(write="?::meal")
     private Meal meal;
-    private Integer calories;
-    private Double fat;
-    private Double fatSaturated;
-    private Double fatTrans;
-    private Double fatPolyunsaturated;
-    private Double fatMonounsaturated;
-    private Integer cholesterol;
-    private Double carbohydrates;
-    private Double fiber;
-    private Double sugar;
-    private Double protein;
-    private Integer sodium;
-    private Integer potassium;
-    private Integer calcium;
-    private Integer iron;
-    @Column(name = "vitamin_a")
-    private Integer vitaminA;
-    @Column(name = "vitamin_c")
-    private Integer vitaminC;
-    @Column(name = "vitamin_d")
-    private Integer vitaminD;
 }

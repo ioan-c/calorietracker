@@ -1,6 +1,7 @@
 package com.mj.calorietracker.controller;
 
 import com.mj.calorietracker.model.MealDiaryEntries;
+import com.mj.calorietracker.model.ResourceId;
 import com.mj.calorietracker.model.add.AddDiaryEntryAndFood;
 import com.mj.calorietracker.model.add.AddDiaryEntry;
 import com.mj.calorietracker.model.DiaryEntry;
@@ -27,19 +28,18 @@ public class DiaryController {
     }
 
     @GetMapping("/{userId}/{entryDate}")
-    public  List<MealDiaryEntries> findDiaryEntriesByUserIdAndDate(@PathVariable UUID userId, @PathVariable LocalDate entryDate) {
+    public List<MealDiaryEntries> findDiaryEntriesByUserIdAndDate(@PathVariable UUID userId, @PathVariable LocalDate entryDate) {
         return diaryService.findDiaryEntriesByUserIdAndDate(userId, entryDate);
     }
 
     @PostMapping("/add")
-    public HttpStatus addEntry(@Valid @RequestBody AddDiaryEntry addDiaryEntry) {
-        diaryService.addDiaryEntry(addDiaryEntry);
-        return HttpStatus.OK;
+    public ResourceId addEntry(@Valid @RequestBody AddDiaryEntry addDiaryEntry) {
+        return new ResourceId(diaryService.addDiaryEntry(addDiaryEntry));
     }
+
     @PostMapping("/add-with-food")
-    public HttpStatus addDiaryEntryAndFood(@Valid @RequestBody AddDiaryEntryAndFood addDiaryEntryAndFood) {
-        diaryService.addDiaryEntryAndFood(addDiaryEntryAndFood);
-        return HttpStatus.OK;
+    public ResourceId addDiaryEntryAndFood(@Valid @RequestBody AddDiaryEntryAndFood addDiaryEntryAndFood) {
+        return new ResourceId(diaryService.addDiaryEntryAndFood(addDiaryEntryAndFood));
     }
 
     @DeleteMapping("/delete/{diaryId}")

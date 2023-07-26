@@ -1,6 +1,5 @@
 package com.mj.calorietracker.model.add;
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.mj.calorietracker.model.NutritionInfo;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -17,7 +16,6 @@ public class AddFood {
     private String name;
     @Size(max = 100)
     private String brand;
-    @JsonUnwrapped
     @Valid
     private NutritionInfo nutritionInfo;
 }

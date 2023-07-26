@@ -1,7 +1,10 @@
 package com.mj.calorietracker.controller.handler;
 
-import com.mj.calorietracker.exception.FoodAlreadyExistsException;
+import com.mj.calorietracker.exception.ConflictException;
+import com.mj.calorietracker.exception.ExistingResourceException;
 import com.mj.calorietracker.exception.ResourceNotFoundException;
+import com.mj.calorietracker.exception.model.ErrorInfo;
+import com.mj.calorietracker.exception.model.ExceptionResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,50 +20,64 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.util.*;
 
+import static com.mj.calorietracker.enums.ExceptionMessages.EXCEPTION_VALIDATION_TYPE;
+
 @RestControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(FoodAlreadyExistsException.class)
-    public ResponseEntity<Object> handleFoodAlreadyExistsException(FoodAlreadyExistsException ex, HttpServletRequest request) {
-        final var responseBody = new HashMap<>(Map.of(
-                "title", "Validation Errors",
-                "resource", request.getRequestURL(),
-                "violationMessage", ex.getMessage(),
-                "existingFood", ex.getExistingFood()));
+    @ExceptionHandler({ConflictException.class})
+    public ResponseEntity<ExceptionResponse> handleConflictException(RuntimeException ex, HttpServletRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                EXCEPTION_VALIDATION_TYPE.getText(),
+                request.getRequestURL().toString(),
+                ex.getMessage());
 
-        return new ResponseEntity<>(responseBody, null, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(exceptionResponse, null, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ExistingResourceException.class)
+    public ResponseEntity<ExceptionResponse> handleExistingResourceException(ExistingResourceException ex, HttpServletRequest request) {
+        ErrorInfo errorInfo = new ErrorInfo(ex.getMessage()).setResource(ex.getExistingResource());
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                EXCEPTION_VALIDATION_TYPE.getText(),
+                request.getRequestURL().toString(),
+                Collections.singletonList(errorInfo));
+
+        return new ResponseEntity<>(exceptionResponse, null, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException ex, HttpServletRequest request) {
-        final var responseBody = new HashMap<>(Map.of(
-                "title", "Validation Errors",
-                "resource", request.getRequestURL(),
-                "violationMessage", ex.getMessage()));
+    public ResponseEntity<ExceptionResponse> handleResourceNotFoundException(ResourceNotFoundException ex, HttpServletRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                EXCEPTION_VALIDATION_TYPE.getText(),
+                request.getRequestURL().toString(),
+                ex.getMessage());
 
-        return new ResponseEntity<>(responseBody, null, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(exceptionResponse, null, HttpStatus.NOT_FOUND);
     }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request){
-
         var r = (ServletWebRequest) request;
-        final var responseBody = new HashMap<String, Object>(Map.of("title", "Validation Errors", "resource", r.getRequest().getRequestURL()));
-        final var errorInfoList = new ArrayList<>();
 
-        for (final var error : ex.getBindingResult().getAllErrors()) {
-            if (error instanceof FieldError fieldError) {
-            String className = fieldError.getObjectName();
-            String fieldName = fieldError.getField();
-            String message = fieldError.getDefaultMessage();
+        List<ErrorInfo> errorInfoList = ex.getBindingResult().getAllErrors().stream()
+                .filter(error -> error instanceof FieldError)
+                .map(error -> {
+                    FieldError fieldError = (FieldError) error;
+                    String className = fieldError.getObjectName();
+                    String fieldName = fieldError.getField();
+                    String message = fieldError.getDefaultMessage();
+                    String errorMessage = Objects.nonNull(message) ? message : "Generic error.";
 
-            Map<String, String> errorInfo = Map.of("class", className, "field", fieldName, "violationMessage", Objects.nonNull(message) ? message : "Generic error.");
-            errorInfoList.add(errorInfo);
-            }
+                    return new ErrorInfo(errorMessage).setResourceType(className).setField(fieldName);
+                })
+                .toList();
 
-        }
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                EXCEPTION_VALIDATION_TYPE.getText(),
+                r.getRequest().getRequestURL().toString(),
+                errorInfoList);
 
-        responseBody.put("errors", errorInfoList);
-        return new ResponseEntity<>(responseBody, null, status);
+        return new ResponseEntity<>(exceptionResponse, null, status);
     }
 }

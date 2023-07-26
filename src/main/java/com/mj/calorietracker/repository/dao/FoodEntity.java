@@ -3,6 +3,7 @@ package com.mj.calorietracker.repository.dao;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -13,6 +14,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "foods")
+@DynamicInsert
 public class FoodEntity {
 
     @Id
@@ -23,6 +25,7 @@ public class FoodEntity {
     private String name;
     private String brand;
     private LocalDate createdDate;
+    private Boolean isCurrent;
     private Integer calories;
     private Double fat;
     private Double fatSaturated;
