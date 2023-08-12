@@ -17,5 +17,6 @@ public class AddFood {
     @Size(max = 100)
     private String brand;
     @Valid
+    @NotNull
     private NutritionInfo nutritionInfo;
 }

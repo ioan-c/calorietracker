@@ -1,6 +1,6 @@
 package com.mj.calorietracker.mapper;
 
-import com.mj.calorietracker.model.add.AddDiaryEntryAndFood;
+import com.mj.calorietracker.model.add.AddDiaryEntryWithFood;
 import com.mj.calorietracker.model.add.AddDiaryEntry;
 import com.mj.calorietracker.model.DiaryEntry;
 import com.mj.calorietracker.repository.dao.DiaryEntryEntity;
@@ -21,14 +21,14 @@ public class DiaryMapper {
     public DiaryEntry toModel(DiaryEntryEntity diaryEntryEntity) {
         return modelMapper.map(diaryEntryEntity, DiaryEntry.class);
     }
-    public DiaryEntryEntity toEntity(AddDiaryEntryAndFood addDiaryEntryAndFood, UUID foodId) {
+    public DiaryEntryEntity toEntity(AddDiaryEntryWithFood addDiaryEntryWithFood, UUID foodId) {
         return new DiaryEntryEntity()
-                .setEntryDate(addDiaryEntryAndFood.getEntryDate())
-                .setUserId(addDiaryEntryAndFood.getUserId())
-                .setUnit(new UnitEntity().setId(addDiaryEntryAndFood.getUnitId()))
+                .setEntryDate(addDiaryEntryWithFood.getEntryDate())
+                .setUserId(addDiaryEntryWithFood.getUserId())
+                .setUnit(new UnitEntity().setId(addDiaryEntryWithFood.getUnitId()))
                 .setFood(new FoodEntity().setId(foodId))
-                .setServingQuantity(addDiaryEntryAndFood.getServingQuantity())
-                .setMeal(addDiaryEntryAndFood.getMeal());
+                .setServingQuantity(addDiaryEntryWithFood.getServingQuantity())
+                .setMeal(addDiaryEntryWithFood.getMeal());
     }
 
     public DiaryEntryEntity toEntity(AddDiaryEntry addDiaryEntry) {

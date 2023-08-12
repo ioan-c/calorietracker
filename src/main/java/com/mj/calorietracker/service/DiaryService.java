@@ -4,7 +4,7 @@ import com.mj.calorietracker.exception.ExistingResourceException;
 import com.mj.calorietracker.exception.ResourceNotFoundException;
 import com.mj.calorietracker.model.Food;
 import com.mj.calorietracker.model.MealDiaryEntries;
-import com.mj.calorietracker.model.add.AddDiaryEntryAndFood;
+import com.mj.calorietracker.model.add.AddDiaryEntryWithFood;
 import com.mj.calorietracker.model.add.AddDiaryEntry;
 import com.mj.calorietracker.model.DiaryEntry;
 import com.mj.calorietracker.repository.DiaryEntryRepository;
@@ -57,16 +57,16 @@ public class DiaryService {
         return diaryEntryRepository.save(diaryMapper.toEntity(addDiaryEntry)).getId();
     }
 
-    public final UUID addDiaryEntryAndFood(AddDiaryEntryAndFood addDiaryEntryAndFood) {
+    public final UUID addDiaryEntryAndFood(AddDiaryEntryWithFood addDiaryEntryWithFood) {
         UUID foodId;
         try {
-            foodId = foodService.addFood(addDiaryEntryAndFood.getFood());
+            foodId = foodService.addFood(addDiaryEntryWithFood.getFood());
         } catch (ExistingResourceException e) {
             System.out.println(DIARY_FOOD_COULD_NOT_BE_SAVED.getText());
             foodId = ((Food) e.getExistingResource()).getId();
         }
 
-        return diaryEntryRepository.save(diaryMapper.toEntity(addDiaryEntryAndFood, foodId)).getId();
+        return diaryEntryRepository.save(diaryMapper.toEntity(addDiaryEntryWithFood, foodId)).getId();
     }
 
     public final void deleteDiaryEntry(UUID diaryId) {

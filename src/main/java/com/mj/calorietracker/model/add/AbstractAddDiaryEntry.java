@@ -1,8 +1,9 @@
 package com.mj.calorietracker.model.add;
 
 import com.mj.calorietracker.enums.Meal;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class AddDiaryEntryAndFood {
+public class AbstractAddDiaryEntry {
     @NotNull
     private LocalDate entryDate;
     @NotNull
@@ -24,6 +25,4 @@ public class AddDiaryEntryAndFood {
     private Double servingQuantity;
     @NotNull
     private Meal meal;
-    @Valid
-    private AddFood food;
 }

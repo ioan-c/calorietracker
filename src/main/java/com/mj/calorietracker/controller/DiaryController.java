@@ -2,7 +2,7 @@ package com.mj.calorietracker.controller;
 
 import com.mj.calorietracker.model.MealDiaryEntries;
 import com.mj.calorietracker.model.ResourceId;
-import com.mj.calorietracker.model.add.AddDiaryEntryAndFood;
+import com.mj.calorietracker.model.add.AddDiaryEntryWithFood;
 import com.mj.calorietracker.model.add.AddDiaryEntry;
 import com.mj.calorietracker.model.DiaryEntry;
 import com.mj.calorietracker.service.DiaryService;
@@ -38,8 +38,8 @@ public class DiaryController {
     }
 
     @PostMapping("/add-with-food")
-    public ResourceId addDiaryEntryAndFood(@Valid @RequestBody AddDiaryEntryAndFood addDiaryEntryAndFood) {
-        return new ResourceId(diaryService.addDiaryEntryAndFood(addDiaryEntryAndFood));
+    public ResourceId addDiaryEntryWithFood(@Valid @RequestBody AddDiaryEntryWithFood addDiaryEntryWithFood) {
+        return new ResourceId(diaryService.addDiaryEntryAndFood(addDiaryEntryWithFood));
     }
 
     @DeleteMapping("/delete/{diaryId}")
