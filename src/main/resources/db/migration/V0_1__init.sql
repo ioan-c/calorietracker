@@ -1,11 +1,13 @@
+CREATE EXTENSION IF NOT EXISTS citext;
+
 --FOODS
 DROP TABLE IF EXISTS foods;
 CREATE TABLE foods (
     id UUID primary key not null default gen_random_uuid(),
     barcode character(13),
-    name text not null,
-    brand text,
-    created_date date not null,
+    name citext not null,
+    brand citext,
+    created_date date not null default now()::date,
     is_current bool not null default true,
     calories smallint not null,
     fat numeric not null,
@@ -27,14 +29,16 @@ CREATE TABLE foods (
     vitamin_d smallint
 );
 CREATE UNIQUE INDEX unique_barcode_current_true_idx ON foods (barcode) WHERE is_current;
+CREATE UNIQUE INDEX unique_name_current_true_idx ON foods (name, brand) WHERE is_current;
 
 --USERS
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     id UUID primary key not null default gen_random_uuid(),
-    username text not null,
-    first_name text not null,
-    last_name text not null
+    username citext unique not null,
+    first_name citext not null,
+    last_name citext not null,
+    unique (first_name, last_name)
 );
 INSERT INTO users(id, username, first_name, last_name)
 VALUES ('86acb379-eab9-42c5-91f7-33b9c193756d', 'marshmy', 'Mar', 'Shmy'),

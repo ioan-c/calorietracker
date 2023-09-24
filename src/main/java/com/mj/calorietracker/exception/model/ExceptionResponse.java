@@ -13,7 +13,7 @@ import java.util.List;
 public class ExceptionResponse {
     private String type;
     private String url;
-    private List<ErrorInfo> errors;
+    private List<? extends ErrorInfo> errors;
 
     public ExceptionResponse(String type, String url, String message) {
         this.type = type;
