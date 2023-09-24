@@ -17,9 +17,7 @@ public class UnitEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     @JdbcTypeCode(SqlTypes.UUID)
     private UUID id;
-    @Column(nullable = false, unique = true)
     private String name;
-    @Column(nullable = false)
     private Double weightInGrams;
 
 }

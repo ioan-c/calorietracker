@@ -16,7 +16,8 @@ public enum ExceptionMessages {
     DIARY_ENTRY_NOT_FOUND("Could not find a diary entry with the specified id!"),
     DIARY_FOOD_COULD_NOT_BE_SAVED("Food could not be saved! Proceeding to log in diary only!"),
     FOOD_BARCODE_CONFLICT("Food with this barcode already exists!"),
-    FOOD_NAME_BRAND_CONFLICT("Food with this name and brand already exists!");
+    FOOD_NAME_BRAND_CONFLICT("Food with this name and brand already exists!"),
+    NO_ERROR_MESSAGE("Could not retrieve error message.");
 
     private final String text;
 }

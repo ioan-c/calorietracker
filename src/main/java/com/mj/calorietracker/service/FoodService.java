@@ -2,10 +2,13 @@ package com.mj.calorietracker.service;
 
 import com.mj.calorietracker.exception.ConflictException;
 import com.mj.calorietracker.exception.ExistingResourceException;
+import com.mj.calorietracker.exception.ExistingResourcesException;
 import com.mj.calorietracker.exception.ResourceNotFoundException;
-import com.mj.calorietracker.mapper.FoodMapper;
+import com.mj.calorietracker.exception.model.ErrorInfoForList;
 import com.mj.calorietracker.model.Food;
+import com.mj.calorietracker.model.LocalFoodBridge;
 import com.mj.calorietracker.model.add.AddFood;
+import com.mj.calorietracker.model.add.AddLocalFood;
 import com.mj.calorietracker.model.update.UpdateFood;
 import com.mj.calorietracker.repository.FoodRepository;
 import com.mj.calorietracker.repository.dao.FoodEntity;
@@ -14,13 +17,16 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static com.mj.calorietracker.enums.ExceptionMessages.*;
+import static com.mj.calorietracker.mapper.FoodMapper.foodMapper;
 
 @Service
 @AllArgsConstructor
@@ -28,7 +34,6 @@ import static com.mj.calorietracker.enums.ExceptionMessages.*;
 public class FoodService {
 
     private FoodRepository foodRepository;
-    private FoodMapper foodMapper;
 
     public List<Food> getAllFoods() {
         return foodRepository.findAll().stream().map(foodMapper::toModel).toList();
@@ -45,6 +50,18 @@ public class FoodService {
         validate(food);
 
         return foodRepository.save(foodMapper.toEntity(food)).getId();
+    }
+
+    public List<LocalFoodBridge> addFoodList(List<AddLocalFood> foods) {
+        validateFoods(foods);
+
+        Set<AddLocalFood> uniqueFoods = new TreeSet<>(AddFood.comparator());
+        uniqueFoods.addAll(foods);
+        return uniqueFoods.stream()
+                .map(food -> {
+                    UUID foodId = foodRepository.save(foodMapper.toEntity(food)).getId();
+                    return new LocalFoodBridge(foodId, food.getLocalId());
+                }).toList();
     }
 
     public UUID updateFood(UpdateFood food) {
@@ -84,6 +101,29 @@ public class FoodService {
         foodRepository.findOne(spec).ifPresent(f -> {
             throw new ExistingResourceException(foodMapper.toModel(f), FOOD_NAME_BRAND_CONFLICT.getText());
         });
+    }
+
+    private void validateFoods(List<AddLocalFood> foods) {
+        List<ErrorInfoForList> errorInfoList = IntStream.range(0, foods.size())
+                .mapToObj(i -> {
+                    AddLocalFood addFood = foods.get(i);
+                    try {
+                        validate(addFood);
+                        return null;
+                    } catch (ExistingResourceException ex) {
+                        return new ErrorInfoForList(ex.getMessage(), addFood.getLocalId(), i, ex.getExistingResource());
+                    }
+                })
+                .filter(Objects::nonNull)
+                .toList();
+
+        digestErrorList(errorInfoList);
+    }
+
+    private void digestErrorList(List<ErrorInfoForList> errorInfoList) {
+        if(!CollectionUtils.isEmpty(errorInfoList)) {
+            throw new ExistingResourcesException(errorInfoList);
+        }
     }
 
     private void processSoftDeletion(FoodEntity food) {

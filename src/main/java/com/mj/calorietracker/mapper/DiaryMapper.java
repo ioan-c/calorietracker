@@ -1,43 +1,27 @@
 package com.mj.calorietracker.mapper;
 
-import com.mj.calorietracker.model.add.AddDiaryEntryWithFood;
-import com.mj.calorietracker.model.add.AddDiaryEntry;
 import com.mj.calorietracker.model.DiaryEntry;
+import com.mj.calorietracker.model.add.AddDiaryEntry;
+import com.mj.calorietracker.model.add.AddDiaryEntryWithFood;
 import com.mj.calorietracker.repository.dao.DiaryEntryEntity;
-import com.mj.calorietracker.repository.dao.FoodEntity;
-import com.mj.calorietracker.repository.dao.UnitEntity;
-import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
 import java.util.UUID;
 
-@Component
-@RequiredArgsConstructor
-public class DiaryMapper {
+@Mapper(uses = FoodMapper.class)
+public interface DiaryMapper {
+    DiaryMapper diaryMapper = Mappers.getMapper(DiaryMapper.class);
 
-    private final ModelMapper modelMapper;
+    @Mapping(target="unitId", source = "unit.id")
+    DiaryEntry toModel(DiaryEntryEntity entity);
 
-    public DiaryEntry toModel(DiaryEntryEntity diaryEntryEntity) {
-        return modelMapper.map(diaryEntryEntity, DiaryEntry.class);
-    }
-    public DiaryEntryEntity toEntity(AddDiaryEntryWithFood addDiaryEntryWithFood, UUID foodId) {
-        return new DiaryEntryEntity()
-                .setEntryDate(addDiaryEntryWithFood.getEntryDate())
-                .setUserId(addDiaryEntryWithFood.getUserId())
-                .setUnit(new UnitEntity().setId(addDiaryEntryWithFood.getUnitId()))
-                .setFood(new FoodEntity().setId(foodId))
-                .setServingQuantity(addDiaryEntryWithFood.getServingQuantity())
-                .setMeal(addDiaryEntryWithFood.getMeal());
-    }
+    @Mapping(target="unit.id", source = "model.unitId")
+    @Mapping(target="food.id", source = "foodId")
+    DiaryEntryEntity toEntity(AddDiaryEntryWithFood model, UUID foodId);
 
-    public DiaryEntryEntity toEntity(AddDiaryEntry addDiaryEntry) {
-        return new DiaryEntryEntity()
-                .setEntryDate(addDiaryEntry.getEntryDate())
-                .setUserId(addDiaryEntry.getUserId())
-                .setUnit(new UnitEntity().setId(addDiaryEntry.getUnitId()))
-                .setFood(new FoodEntity().setId(addDiaryEntry.getFoodId()))
-                .setServingQuantity(addDiaryEntry.getServingQuantity())
-                .setMeal(addDiaryEntry.getMeal());
-    }
+    @Mapping(target="unit.id", source = "unitId")
+    @Mapping(target="food.id", source = "foodId")
+    DiaryEntryEntity toEntity(AddDiaryEntry addDiaryEntry);
 }

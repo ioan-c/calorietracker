@@ -1,20 +1,24 @@
 package com.mj.calorietracker.controller;
 
+import com.mj.calorietracker.model.DiaryEntry;
 import com.mj.calorietracker.model.MealDiaryEntries;
 import com.mj.calorietracker.model.ResourceId;
-import com.mj.calorietracker.model.add.AddDiaryEntryWithFood;
 import com.mj.calorietracker.model.add.AddDiaryEntry;
-import com.mj.calorietracker.model.DiaryEntry;
+import com.mj.calorietracker.model.add.AddDiaryEntryWithFood;
+import com.mj.calorietracker.model.add.AddLocalDiaryEntry;
 import com.mj.calorietracker.service.DiaryService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+@Validated
 @RestController
 @AllArgsConstructor
 @RequestMapping(path = "/diary-entries")
@@ -40,6 +44,12 @@ public class DiaryController {
     @PostMapping("/add-with-food")
     public ResourceId addDiaryEntryWithFood(@Valid @RequestBody AddDiaryEntryWithFood addDiaryEntryWithFood) {
         return new ResourceId(diaryService.addDiaryEntryAndFood(addDiaryEntryWithFood));
+    }
+
+    @PostMapping("/add-list")
+    public HttpStatus addDiaryEntriesList(@RequestBody @NotEmpty List<@Valid AddLocalDiaryEntry> addDiaryEntryList) {
+        diaryService.addDiaryEntriesList(addDiaryEntryList);
+        return HttpStatus.OK;
     }
 
     @DeleteMapping("/delete/{diaryId}")
