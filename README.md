@@ -2,7 +2,7 @@
 
 ### Prerequisites
 * Docker
-* Java 17
+* Java 21
 
 ### Deploy the database:
 * run ```docker-compose up``` command in project root
