@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### local ###
+src/main/resources/git-commit-info.txt
+script.bat
