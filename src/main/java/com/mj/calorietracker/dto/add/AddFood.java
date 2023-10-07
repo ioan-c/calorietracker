@@ -32,7 +32,7 @@ public class AddFood {
                 return 0;
 
             if (Objects.nonNull(f1) && Objects.nonNull(f2)) {
-                if (Objects.equals(f1.getBarcode(), f2.getBarcode())) {
+                if (Objects.nonNull(f1.getBarcode()) && Objects.equals(f1.getBarcode(), f2.getBarcode())) {
                     return 0;
                 } else if (Objects.equals(f1.getName(), f2.getName()) && Objects.equals(f1.getBrand(), f2.getBrand())) {
                     return 0;

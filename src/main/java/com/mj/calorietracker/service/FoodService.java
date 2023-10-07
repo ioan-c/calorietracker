@@ -1,7 +1,7 @@
 package com.mj.calorietracker.service;
 
 import com.mj.calorietracker.dto.Food;
-import com.mj.calorietracker.dto.LocalFoodBridge;
+import com.mj.calorietracker.dto.LocalResourceBridge;
 import com.mj.calorietracker.dto.add.AddFood;
 import com.mj.calorietracker.dto.add.AddLocalFood;
 import com.mj.calorietracker.dto.update.UpdateFood;
@@ -52,7 +52,7 @@ public class FoodService {
         return foodRepository.save(foodMapper.toEntity(food)).getId();
     }
 
-    public List<LocalFoodBridge> addFoodList(List<AddLocalFood> foods) {
+    public List<LocalResourceBridge> addFoodList(List<AddLocalFood> foods) {
         validateFoods(foods);
 
         Set<AddLocalFood> uniqueFoods = new TreeSet<>(AddFood.comparator());
@@ -60,7 +60,7 @@ public class FoodService {
         return uniqueFoods.stream()
                 .map(food -> {
                     UUID foodId = foodRepository.save(foodMapper.toEntity(food)).getId();
-                    return new LocalFoodBridge(foodId, food.getLocalId());
+                    return new LocalResourceBridge(foodId, food.getLocalId());
                 }).toList();
     }
 

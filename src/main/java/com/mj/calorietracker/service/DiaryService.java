@@ -2,6 +2,7 @@ package com.mj.calorietracker.service;
 
 import com.mj.calorietracker.dto.DiaryEntry;
 import com.mj.calorietracker.dto.Food;
+import com.mj.calorietracker.dto.LocalResourceBridge;
 import com.mj.calorietracker.dto.MealDiaryEntries;
 import com.mj.calorietracker.dto.add.AddDiaryEntry;
 import com.mj.calorietracker.dto.add.AddDiaryEntryWithFood;
@@ -78,9 +79,14 @@ public class DiaryService {
         return diaryEntryRepository.save(diaryMapper.toEntity(addDiaryEntryWithFood, foodId)).getId();
     }
 
-    public void addDiaryEntriesList(List<AddLocalDiaryEntry> addDiaryEntryList) {
+    public List<LocalResourceBridge> addDiaryEntriesList(List<AddLocalDiaryEntry> addDiaryEntryList) {
         validateDiaryEntries(addDiaryEntryList);
-        diaryEntryRepository.saveAll(addDiaryEntryList.stream().map(diaryMapper::toEntity).toList());
+
+        return addDiaryEntryList.stream()
+                .map(diaryEntry -> {
+                    UUID diaryEntryId = diaryEntryRepository.save(diaryMapper.toEntity(diaryEntry)).getId();
+                    return new LocalResourceBridge(diaryEntryId, diaryEntry.getLocalId());
+                }).toList();
     }
 
     private void validateDiaryEntries(List<AddLocalDiaryEntry> addDiaryEntryList) {
