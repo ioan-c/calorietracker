@@ -1,15 +1,15 @@
 package com.mj.calorietracker.service;
 
+import com.mj.calorietracker.dto.DiaryEntry;
+import com.mj.calorietracker.dto.Food;
+import com.mj.calorietracker.dto.MealDiaryEntries;
+import com.mj.calorietracker.dto.add.AddDiaryEntry;
+import com.mj.calorietracker.dto.add.AddDiaryEntryWithFood;
+import com.mj.calorietracker.dto.add.AddLocalDiaryEntry;
 import com.mj.calorietracker.exception.ExistingResourceException;
 import com.mj.calorietracker.exception.ResourceNotFoundException;
 import com.mj.calorietracker.exception.ResourcesNotFoundException;
 import com.mj.calorietracker.exception.model.ErrorInfoForList;
-import com.mj.calorietracker.model.DiaryEntry;
-import com.mj.calorietracker.model.Food;
-import com.mj.calorietracker.model.MealDiaryEntries;
-import com.mj.calorietracker.model.add.AddDiaryEntry;
-import com.mj.calorietracker.model.add.AddDiaryEntryWithFood;
-import com.mj.calorietracker.model.add.AddLocalDiaryEntry;
 import com.mj.calorietracker.repository.DiaryEntryRepository;
 import com.mj.calorietracker.repository.FoodRepository;
 import com.mj.calorietracker.repository.UnitRepository;

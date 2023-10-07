@@ -1,15 +1,15 @@
 package com.mj.calorietracker.service;
 
+import com.mj.calorietracker.dto.Food;
+import com.mj.calorietracker.dto.LocalFoodBridge;
+import com.mj.calorietracker.dto.add.AddFood;
+import com.mj.calorietracker.dto.add.AddLocalFood;
+import com.mj.calorietracker.dto.update.UpdateFood;
 import com.mj.calorietracker.exception.ConflictException;
 import com.mj.calorietracker.exception.ExistingResourceException;
 import com.mj.calorietracker.exception.ExistingResourcesException;
 import com.mj.calorietracker.exception.ResourceNotFoundException;
 import com.mj.calorietracker.exception.model.ErrorInfoForList;
-import com.mj.calorietracker.model.Food;
-import com.mj.calorietracker.model.LocalFoodBridge;
-import com.mj.calorietracker.model.add.AddFood;
-import com.mj.calorietracker.model.add.AddLocalFood;
-import com.mj.calorietracker.model.update.UpdateFood;
 import com.mj.calorietracker.repository.FoodRepository;
 import com.mj.calorietracker.repository.dao.FoodEntity;
 import com.mj.calorietracker.repository.specification.FoodSpecifications;

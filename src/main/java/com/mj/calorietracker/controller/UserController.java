@@ -1,6 +1,6 @@
 package com.mj.calorietracker.controller;
 
-import com.mj.calorietracker.model.ResourceId;
+import com.mj.calorietracker.dto.ResourceId;
 import com.mj.calorietracker.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

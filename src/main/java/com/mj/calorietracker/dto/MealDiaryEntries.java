@@ -1,4 +1,4 @@
-package com.mj.calorietracker.model;
+package com.mj.calorietracker.dto;
 
 import com.mj.calorietracker.enums.Meal;
 import lombok.Getter;

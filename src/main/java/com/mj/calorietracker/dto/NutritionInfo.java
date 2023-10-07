@@ -1,4 +1,4 @@
-package com.mj.calorietracker.model;
+package com.mj.calorietracker.dto;
 
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Max;

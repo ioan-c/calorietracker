@@ -1,11 +1,11 @@
 package com.mj.calorietracker.controller;
 
-import com.mj.calorietracker.model.DiaryEntry;
-import com.mj.calorietracker.model.MealDiaryEntries;
-import com.mj.calorietracker.model.ResourceId;
-import com.mj.calorietracker.model.add.AddDiaryEntry;
-import com.mj.calorietracker.model.add.AddDiaryEntryWithFood;
-import com.mj.calorietracker.model.add.AddLocalDiaryEntry;
+import com.mj.calorietracker.dto.DiaryEntry;
+import com.mj.calorietracker.dto.MealDiaryEntries;
+import com.mj.calorietracker.dto.ResourceId;
+import com.mj.calorietracker.dto.add.AddDiaryEntry;
+import com.mj.calorietracker.dto.add.AddDiaryEntryWithFood;
+import com.mj.calorietracker.dto.add.AddLocalDiaryEntry;
 import com.mj.calorietracker.service.DiaryService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
