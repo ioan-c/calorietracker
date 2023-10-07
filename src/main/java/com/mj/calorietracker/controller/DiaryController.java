@@ -1,6 +1,7 @@
 package com.mj.calorietracker.controller;
 
 import com.mj.calorietracker.dto.DiaryEntry;
+import com.mj.calorietracker.dto.LocalResourceBridge;
 import com.mj.calorietracker.dto.MealDiaryEntries;
 import com.mj.calorietracker.dto.ResourceId;
 import com.mj.calorietracker.dto.add.AddDiaryEntry;
@@ -47,9 +48,8 @@ public class DiaryController {
     }
 
     @PostMapping("/add-list")
-    public HttpStatus addDiaryEntriesList(@RequestBody @NotEmpty List<@Valid AddLocalDiaryEntry> addDiaryEntryList) {
-        diaryService.addDiaryEntriesList(addDiaryEntryList);
-        return HttpStatus.OK;
+    public List<LocalResourceBridge> addDiaryEntriesList(@RequestBody @NotEmpty List<@Valid AddLocalDiaryEntry> addDiaryEntryList) {
+        return diaryService.addDiaryEntriesList(addDiaryEntryList);
     }
 
     @DeleteMapping("/delete/{diaryId}")

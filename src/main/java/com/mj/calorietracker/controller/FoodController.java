@@ -1,7 +1,7 @@
 package com.mj.calorietracker.controller;
 
 import com.mj.calorietracker.dto.Food;
-import com.mj.calorietracker.dto.LocalFoodBridge;
+import com.mj.calorietracker.dto.LocalResourceBridge;
 import com.mj.calorietracker.dto.ResourceId;
 import com.mj.calorietracker.dto.add.AddFood;
 import com.mj.calorietracker.dto.add.AddLocalFood;
@@ -42,7 +42,7 @@ public class FoodController {
     }
 
     @PostMapping("/add-list")
-    public List<LocalFoodBridge> addFoodList(@RequestBody @NotEmpty List<@Valid AddLocalFood> foodList) {
+    public List<LocalResourceBridge> addFoodList(@RequestBody @NotEmpty List<@Valid AddLocalFood> foodList) {
         return foodService.addFoodList(foodList);
     }
 
