@@ -1,7 +1,7 @@
-package com.mj.calorietracker.model.update;
+package com.mj.calorietracker.dto.update;
 
-import com.mj.calorietracker.model.add.AddFood;
-import jakarta.validation.constraints.*;
+import com.mj.calorietracker.dto.add.AddFood;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 

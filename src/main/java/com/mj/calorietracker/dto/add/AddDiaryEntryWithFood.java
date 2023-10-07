@@ -1,4 +1,4 @@
-package com.mj.calorietracker.model.add;
+package com.mj.calorietracker.dto.add;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

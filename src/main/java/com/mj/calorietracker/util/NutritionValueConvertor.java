@@ -1,6 +1,6 @@
 package com.mj.calorietracker.util;
 
-import com.mj.calorietracker.model.NutritionInfo;
+import com.mj.calorietracker.dto.NutritionInfo;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

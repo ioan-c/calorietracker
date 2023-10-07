@@ -1,11 +1,11 @@
 package com.mj.calorietracker.controller;
 
-import com.mj.calorietracker.model.Food;
-import com.mj.calorietracker.model.LocalFoodBridge;
-import com.mj.calorietracker.model.ResourceId;
-import com.mj.calorietracker.model.add.AddFood;
-import com.mj.calorietracker.model.add.AddLocalFood;
-import com.mj.calorietracker.model.update.UpdateFood;
+import com.mj.calorietracker.dto.Food;
+import com.mj.calorietracker.dto.LocalFoodBridge;
+import com.mj.calorietracker.dto.ResourceId;
+import com.mj.calorietracker.dto.add.AddFood;
+import com.mj.calorietracker.dto.add.AddLocalFood;
+import com.mj.calorietracker.dto.update.UpdateFood;
 import com.mj.calorietracker.service.FoodService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;

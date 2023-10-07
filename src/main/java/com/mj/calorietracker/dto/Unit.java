@@ -1,4 +1,4 @@
-package com.mj.calorietracker.model;
+package com.mj.calorietracker.dto;
 
 import lombok.Getter;
 import lombok.Setter;

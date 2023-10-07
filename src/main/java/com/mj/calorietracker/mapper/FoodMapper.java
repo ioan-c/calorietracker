@@ -1,7 +1,7 @@
 package com.mj.calorietracker.mapper;
 
-import com.mj.calorietracker.model.Food;
-import com.mj.calorietracker.model.add.AddFood;
+import com.mj.calorietracker.dto.Food;
+import com.mj.calorietracker.dto.add.AddFood;
 import com.mj.calorietracker.repository.dao.FoodEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

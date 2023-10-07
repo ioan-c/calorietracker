@@ -1,4 +1,4 @@
-package com.mj.calorietracker.model.add;
+package com.mj.calorietracker.dto.add;
 
 import com.mj.calorietracker.enums.Meal;
 import jakarta.validation.constraints.Digits;
