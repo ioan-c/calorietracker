@@ -5,6 +5,13 @@ import com.mj.calorietracker.dto.NutritionInfo;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+/**
+ * Calculates nutritional info for the serving quantity to save it on the diary entry.
+ * @deprecated
+ * This logic is no longer used on server side as diary entries are currently saved only with a reference to their food
+ * and the client dynamically adjusts their nutritional value.
+ */
+@Deprecated
 public class NutritionValueConvertor {
 
     public static NutritionInfo convertToServingQuantity(NutritionInfo nutritionInfo, Double servingQuantity) {

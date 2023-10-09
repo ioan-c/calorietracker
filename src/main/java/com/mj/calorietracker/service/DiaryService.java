@@ -1,19 +1,16 @@
 package com.mj.calorietracker.service;
 
 import com.mj.calorietracker.dto.DiaryEntry;
-import com.mj.calorietracker.dto.Food;
 import com.mj.calorietracker.dto.LocalResourceBridge;
 import com.mj.calorietracker.dto.MealDiaryEntries;
 import com.mj.calorietracker.dto.add.AddDiaryEntry;
-import com.mj.calorietracker.dto.add.AddDiaryEntryWithFood;
 import com.mj.calorietracker.dto.add.AddLocalDiaryEntry;
-import com.mj.calorietracker.exception.ExistingResourceException;
 import com.mj.calorietracker.exception.ResourceNotFoundException;
 import com.mj.calorietracker.exception.ResourcesNotFoundException;
 import com.mj.calorietracker.exception.model.ErrorInfoForList;
 import com.mj.calorietracker.repository.DiaryEntryRepository;
 import com.mj.calorietracker.repository.FoodRepository;
-import com.mj.calorietracker.repository.UnitRepository;
+import com.mj.calorietracker.repository.FoodUnitRepository;
 import com.mj.calorietracker.repository.UserRepository;
 import com.mj.calorietracker.repository.dao.DiaryEntryEntity;
 import lombok.AllArgsConstructor;
@@ -41,11 +38,11 @@ public class DiaryService {
     private FoodService foodService;
     private FoodRepository foodRepository;
     private UserRepository userRepository;
-    private UnitRepository unitRepository;
+    private FoodUnitRepository foodUnitRepository;
     private DiaryEntryRepository diaryEntryRepository;
 
     public List<DiaryEntry> findAllDiaryEntries() {
-        return diaryEntryRepository.findAll().stream().map(diaryMapper::toModel).toList();
+        return diaryEntryRepository.findAll().stream().map(diaryMapper::toDto).toList();
     }
 
     public List<MealDiaryEntries> findDiaryEntriesByUserIdAndDate(UUID userId, LocalDate entryDate) {
@@ -54,7 +51,7 @@ public class DiaryService {
                     .collect(groupingBy(DiaryEntryEntity::getMeal))
                     .entrySet().stream()
                     .map(mealListEntry -> new MealDiaryEntries().setMeal(mealListEntry.getKey())
-                            .setDiaryEntries(mealListEntry.getValue().stream().map(diaryMapper::toModel).toList()))
+                            .setDiaryEntries(mealListEntry.getValue().stream().map(diaryMapper::toDto).toList()))
                     .toList();
         } else {
             throw new ResourceNotFoundException(USER_NOT_FOUND.getText());
@@ -65,18 +62,6 @@ public class DiaryService {
         validate(addDiaryEntry);
 
         return diaryEntryRepository.save(diaryMapper.toEntity(addDiaryEntry)).getId();
-    }
-
-    public UUID addDiaryEntryAndFood(AddDiaryEntryWithFood addDiaryEntryWithFood) {
-        UUID foodId;
-        try {
-            foodId = foodService.addFood(addDiaryEntryWithFood.getFood());
-        } catch (ExistingResourceException e) {
-            log.info(DIARY_FOOD_COULD_NOT_BE_SAVED.getText());
-            foodId = ((Food) e.getExistingResource()).getId();
-        }
-
-        return diaryEntryRepository.save(diaryMapper.toEntity(addDiaryEntryWithFood, foodId)).getId();
     }
 
     public List<LocalResourceBridge> addDiaryEntriesList(List<AddLocalDiaryEntry> addDiaryEntryList) {
@@ -124,9 +109,25 @@ public class DiaryService {
     }
 
     private void validate(AddDiaryEntry addDiaryEntry) {
-        foodRepository.findById(addDiaryEntry.getFoodId()).orElseThrow(() -> new ResourceNotFoundException(FOOD_NOT_FOUND.getText()));
-        userRepository.findById(addDiaryEntry.getUserId()).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND.getText()));
-        unitRepository.findById(addDiaryEntry.getUnitId()).orElseThrow(() -> new ResourceNotFoundException(UNIT_NOT_FOUND.getText()));
+        validateFoodExists(addDiaryEntry.getFoodId());
+        validateUserExists(addDiaryEntry.getUserId());
+        validateUnitAvailableForFood(addDiaryEntry.getFoodId(), addDiaryEntry.getFoodUnitId());
     }
 
+    private void validateFoodExists(UUID foodId) {
+        foodRepository.findById(foodId)
+                .orElseThrow(() -> new ResourceNotFoundException(FOOD_NOT_FOUND.getText()));
+    }
+
+    private void validateUserExists(UUID userId) {
+        userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND.getText()));
+    }
+
+    private void validateUnitAvailableForFood(UUID foodId, Integer foodUnitId) {
+        foodUnitRepository.findAllByFoodIdIsNullOrFoodId(foodId).stream()
+                .filter(fu -> fu.getId().equals(foodUnitId))
+                .findAny()
+                .orElseThrow(() -> new ResourceNotFoundException(UNIT_NOT_FOUND.getText()));
+    }
 }

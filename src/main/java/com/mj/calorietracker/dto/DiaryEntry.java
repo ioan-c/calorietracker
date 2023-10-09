@@ -11,7 +11,7 @@ import java.util.UUID;
 public class DiaryEntry {
     private UUID id;
     private LocalDate entryDate;
-    private UUID unitId;
+    private FoodUnit unit;
     private Double servingQuantity;
     private Food food;
 }
