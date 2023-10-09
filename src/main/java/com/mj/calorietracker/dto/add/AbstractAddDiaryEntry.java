@@ -18,7 +18,7 @@ public class AbstractAddDiaryEntry {
     @NotNull
     private UUID userId;
     @NotNull
-    private UUID unitId;
+    private Integer foodUnitId;
     @NotNull
     @PositiveOrZero()
     @Digits(integer = 3, fraction = 2)

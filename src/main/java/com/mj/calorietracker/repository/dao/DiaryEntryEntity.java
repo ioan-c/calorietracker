@@ -24,8 +24,8 @@ public class DiaryEntryEntity {
     private LocalDate entryDate;
     private UUID userId;
     @ManyToOne
-    @JoinColumn(name = "unit_id")
-    private UnitEntity unit;
+    @JoinColumn(name = "food_unit_id")
+    private FoodUnitEntity unit;
     @ManyToOne
     @JoinColumn(name = "food_id")
     private FoodEntity food;

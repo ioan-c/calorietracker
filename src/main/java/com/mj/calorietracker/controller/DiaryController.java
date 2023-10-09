@@ -5,7 +5,6 @@ import com.mj.calorietracker.dto.LocalResourceBridge;
 import com.mj.calorietracker.dto.MealDiaryEntries;
 import com.mj.calorietracker.dto.ResourceId;
 import com.mj.calorietracker.dto.add.AddDiaryEntry;
-import com.mj.calorietracker.dto.add.AddDiaryEntryWithFood;
 import com.mj.calorietracker.dto.add.AddLocalDiaryEntry;
 import com.mj.calorietracker.service.DiaryService;
 import jakarta.validation.Valid;
@@ -41,22 +40,6 @@ public class DiaryController {
     @PostMapping("/add")
     public ResourceId addEntry(@Valid @RequestBody AddDiaryEntry addDiaryEntry) {
         return new ResourceId(diaryService.addDiaryEntry(addDiaryEntry));
-    }
-
-    @PostMapping("/add-with-food")
-    public ResourceId addDiaryEntryWithFood(@Valid @RequestBody AddDiaryEntryWithFood addDiaryEntryWithFood) {
-        return new ResourceId(diaryService.addDiaryEntryAndFood(addDiaryEntryWithFood));
-    }
-
-    /**
-     * Saves a diary entry list.
-     * @deprecated
-     * This has been replaced by "/add/list".
-     */
-    @Deprecated
-    @PostMapping("/add-list")
-    public List<LocalResourceBridge> addDiaryEntriesListDeprecated(@RequestBody @NotEmpty List<@Valid AddLocalDiaryEntry> addDiaryEntryList) {
-        return diaryService.addDiaryEntriesList(addDiaryEntryList);
     }
 
     @PostMapping("/add/list")
