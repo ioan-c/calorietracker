@@ -119,6 +119,10 @@ public class DiaryService {
                 });
     }
 
+    public void deleteDiaryEntryBatch(List<UUID> diaryEntryIds) {
+        diaryEntryRepository.deleteAllByIdInBatch(diaryEntryIds);
+    }
+
     private void validate(AddDiaryEntry addDiaryEntry) {
         foodRepository.findById(addDiaryEntry.getFoodId()).orElseThrow(() -> new ResourceNotFoundException(FOOD_NOT_FOUND.getText()));
         userRepository.findById(addDiaryEntry.getUserId()).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND.getText()));

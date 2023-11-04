@@ -10,6 +10,7 @@ import com.mj.calorietracker.dto.add.AddLocalDiaryEntry;
 import com.mj.calorietracker.service.DiaryService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -47,7 +48,18 @@ public class DiaryController {
         return new ResourceId(diaryService.addDiaryEntryAndFood(addDiaryEntryWithFood));
     }
 
+    /**
+     * Saves a diary entry list.
+     * @deprecated
+     * This has been replaced by "/add/list".
+     */
+    @Deprecated
     @PostMapping("/add-list")
+    public List<LocalResourceBridge> addDiaryEntriesListDeprecated(@RequestBody @NotEmpty List<@Valid AddLocalDiaryEntry> addDiaryEntryList) {
+        return diaryService.addDiaryEntriesList(addDiaryEntryList);
+    }
+
+    @PostMapping("/add/list")
     public List<LocalResourceBridge> addDiaryEntriesList(@RequestBody @NotEmpty List<@Valid AddLocalDiaryEntry> addDiaryEntryList) {
         return diaryService.addDiaryEntriesList(addDiaryEntryList);
     }
@@ -55,6 +67,12 @@ public class DiaryController {
     @DeleteMapping("/delete/{diaryId}")
     public HttpStatus deleteDiaryEntry(@PathVariable UUID diaryId) {
         diaryService.deleteDiaryEntry(diaryId);
+        return HttpStatus.OK;
+    }
+
+    @PostMapping("/delete/list")
+    public HttpStatus deleteDiaryEntryList(@RequestBody @NotEmpty List<@NotNull UUID> deleteDiaryEntryList) {
+        diaryService.deleteDiaryEntryBatch(deleteDiaryEntryList);
         return HttpStatus.OK;
     }
 
