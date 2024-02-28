@@ -40,7 +40,7 @@ public class FoodService {
     }
 
     public List<Food> findBySearchString(String searchString) {
-        Set<String> searchValues = Set.of(searchString.split("\\s+"));
+        Set<String> searchValues = Arrays.stream(searchString.split("\\s+")).collect(Collectors.toSet());
         Specification<FoodEntity> spec = FoodSpecifications.searchInFoods(searchValues);
         return foodRepository.findAll(spec).stream().map(foodMapper::toModel)
                 .sorted(Comparator.comparingInt(food -> countMatchedValues((Food) food, searchValues)).reversed()).toList();
