@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 @Validated
 @RestController
@@ -33,7 +32,7 @@ public class DiaryController {
     }
 
     @GetMapping("/{userId}/{entryDate}")
-    public List<MealDiaryEntries> findDiaryEntriesByUserIdAndDate(@PathVariable UUID userId, @PathVariable LocalDate entryDate) {
+    public List<MealDiaryEntries> findDiaryEntriesByUserIdAndDate(@PathVariable String userId, @PathVariable LocalDate entryDate) {
         return diaryService.findDiaryEntriesByUserIdAndDate(userId, entryDate);
     }
 
@@ -48,13 +47,13 @@ public class DiaryController {
     }
 
     @DeleteMapping("/delete/{diaryId}")
-    public HttpStatus deleteDiaryEntry(@PathVariable UUID diaryId) {
+    public HttpStatus deleteDiaryEntry(@PathVariable Integer diaryId) {
         diaryService.deleteDiaryEntry(diaryId);
         return HttpStatus.OK;
     }
 
     @PostMapping("/delete/list")
-    public HttpStatus deleteDiaryEntryList(@RequestBody @NotEmpty List<@NotNull UUID> deleteDiaryEntryList) {
+    public HttpStatus deleteDiaryEntryList(@RequestBody @NotEmpty List<@NotNull Integer> deleteDiaryEntryList) {
         diaryService.deleteDiaryEntryBatch(deleteDiaryEntryList);
         return HttpStatus.OK;
     }

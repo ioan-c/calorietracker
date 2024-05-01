@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,7 +17,7 @@ public class UnitController {
     private final UnitService unitService;
 
     @GetMapping("/food/{foodId}")
-    public List<FoodUnit> getUnitsForFood(@PathVariable UUID foodId) {
+    public List<FoodUnit> getUnitsForFood(@PathVariable Integer foodId) {
         return unitService.findUnitsForFood(foodId);
     }
 }

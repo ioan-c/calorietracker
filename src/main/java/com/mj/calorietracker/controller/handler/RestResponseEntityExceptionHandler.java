@@ -2,10 +2,12 @@ package com.mj.calorietracker.controller.handler;
 
 import com.mj.calorietracker.exception.*;
 import com.mj.calorietracker.exception.model.ErrorInfoExtended;
+import com.mj.calorietracker.exception.model.ErrorInfoForList;
 import com.mj.calorietracker.exception.model.ExceptionResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.context.MessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -16,12 +18,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.mj.calorietracker.enums.ExceptionMessages.EXCEPTION_VALIDATION_TYPE;
 import static com.mj.calorietracker.enums.ExceptionMessages.NO_ERROR_MESSAGE;
@@ -107,7 +111,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         var r = (ServletWebRequest) request;
 
         List<ErrorInfoExtended> errorInfoList = ex.getBindingResult().getAllErrors().stream()
-                .filter(error -> error instanceof FieldError)
+                .filter(FieldError.class::isInstance)
                 .map(error -> {
                     FieldError fieldError = (FieldError) error;
                     String className = fieldError.getObjectName();
@@ -125,5 +129,30 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 errorInfoList);
 
         return new ResponseEntity<>(exceptionResponse, null, status);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHandlerMethodValidationException(HandlerMethodValidationException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        var r = (ServletWebRequest) request;
+        List<ErrorInfoForList> errorInfos = ex.getValueResults().stream().map(vr -> {
+            Integer index = vr.getMethodParameter().getParameterIndex();
+            String validationMessage = vr.getResolvableErrors().stream().map(MessageSourceResolvable::getDefaultMessage).collect(Collectors.joining(", "));
+            return new ErrorInfoForList(validationMessage, index);
+        }).toList();
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                EXCEPTION_VALIDATION_TYPE.getText(),
+                r.getRequest().getRequestURL().toString(),
+                errorInfos);
+        return new ResponseEntity<>(exceptionResponse, headers, status);
+    }
+
+    @ExceptionHandler(ServiceUnreachableException.class)
+    public ResponseEntity<ExceptionResponse> handleExternalServiceUnreachable(ServiceUnreachableException ex, HttpServletRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                "Server Error",
+                request.getRequestURL().toString(),
+                ex.getMessage());
+
+        return new ResponseEntity<>(exceptionResponse, null, HttpStatus.SERVICE_UNAVAILABLE);
     }
 }

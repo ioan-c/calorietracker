@@ -11,6 +11,11 @@ public class ErrorInfoForList extends ErrorInfo {
     private Integer localId;
     private Integer index;
     private Object resource;
+    private String additionalNote;
+    public ErrorInfoForList(String message, Integer index) {
+        super(message);
+        this.index = index;
+    }
     public ErrorInfoForList(String message, Integer localId, Integer index) {
         super(message);
         this.localId = localId;
@@ -21,5 +26,10 @@ public class ErrorInfoForList extends ErrorInfo {
         this.localId = localId;
         this.index = index;
         this.resource = resource;
+    }
+    public ErrorInfoForList(String message, Integer index, String additionalNote) {
+        super(message);
+        this.index = index;
+        this.additionalNote = additionalNote;
     }
 }

@@ -16,7 +16,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @Validated
 @RestController
@@ -52,7 +51,7 @@ public class FoodController {
     }
 
     @DeleteMapping("/delete/{foodId}")
-    public HttpStatus deleteFood(@PathVariable UUID foodId) {
+    public HttpStatus deleteFood(@PathVariable Integer foodId) {
         foodService.softDeleteFood(foodId);
         return HttpStatus.OK;
     }

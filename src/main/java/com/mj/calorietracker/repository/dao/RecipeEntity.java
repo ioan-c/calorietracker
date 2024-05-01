@@ -7,10 +7,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "units")
-public class UnitEntity {
+@Table(name = "recipes")
+public class RecipeEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Integer id;
     private String name;
-    private String abbrev;
+    private String description;
+    private Integer cookedWeight;
 }

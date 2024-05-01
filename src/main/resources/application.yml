@@ -1,0 +1,18 @@
+spring:
+    datasource:
+        password: calorietracker
+        url: jdbc:postgresql://localhost:5432/calorietracker
+        username: calorietracker
+    flyway:
+        enabled: true
+    jpa:
+        properties:
+            hibernate:
+                check_nullability: true
+        show-sql: true
+    sql:
+        init:
+            platform: postgres
+
+external-services:
+    user-management-uri: http://192.168.0.133:8080/user

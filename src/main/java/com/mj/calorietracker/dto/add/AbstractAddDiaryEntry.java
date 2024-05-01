@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -16,7 +15,7 @@ public class AbstractAddDiaryEntry {
     @NotNull
     private LocalDate entryDate;
     @NotNull
-    private UUID userId;
+    private String userId;
     @NotNull
     private Integer foodUnitId;
     @NotNull

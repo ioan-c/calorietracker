@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 import static com.mj.calorietracker.mapper.UnitMapper.unitMapper;
 
@@ -16,7 +15,7 @@ public class UnitService {
 
     private final FoodUnitRepository foodUnitRepository;
 
-    public final List<FoodUnit> findUnitsForFood(final UUID foodId) {
+    public final List<FoodUnit> findUnitsForFood(final Integer foodId) {
         return foodUnitRepository.findAllByFoodIdIsNullOrFoodId(foodId).stream()
                 .map(unitMapper::toDTO)
                 .toList();

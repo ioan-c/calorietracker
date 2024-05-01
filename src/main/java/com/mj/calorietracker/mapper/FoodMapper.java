@@ -28,7 +28,7 @@ public interface FoodMapper {
     @Mapping(target="nutritionInfo.vitaminA", source = "vitaminA")
     @Mapping(target="nutritionInfo.vitaminC", source = "vitaminC")
     @Mapping(target="nutritionInfo.vitaminD", source = "vitaminD")
-    Food toModel(FoodEntity foodEntity);
+    Food toFood(FoodEntity foodEntity);
 
     @Mapping(target="calories", source = "nutritionInfo.calories")
     @Mapping(target="fat", source = "nutritionInfo.fat")
